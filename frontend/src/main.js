@@ -23,7 +23,7 @@ startButton.addEventListener('click', async () => {
 
             try {
                 // Send the audio to your backend (replace '/recognize' with your endpoint).
-                const response = await fetch('/recognize', {
+                const response = await fetch('http://localhost:8080/recognize', {
                     method: 'POST',
                     body: formData
                 });
