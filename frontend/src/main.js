@@ -100,6 +100,8 @@ const startListening = async () => {
 }
 
 const unmmutePlayer = function () {
+  startButton.classList.toggle('start', false);
+  startButton.classList.toggle('playing', true);
   player.muted(false);
 }
 
