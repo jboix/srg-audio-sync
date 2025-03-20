@@ -1,8 +1,8 @@
 import './style.css'
 import {default as Pillarbox} from "@srgssr/pillarbox-web";
 
+const player = Pillarbox('main-player', {autoplay: true});
 const startButton = document.getElementById('startButton');
-const timestampDisplay = document.getElementById('timestamp');
 
 startButton.addEventListener('click', async () => {
   // Request access to the microphone.
@@ -24,16 +24,19 @@ startButton.addEventListener('click', async () => {
 
       try {
         // Send the audio to your backend (replace '/recognize' with your endpoint).
-        var start = Date.now();
+        const start = Date.now();
         const response = await fetch('http://localhost:8080/recognize', {
           method: 'POST',
           body: formData
         });
-        var end = Date.now();
         const data = await response.json();
         const timestamp = data?.metadata?.custom_files[0]?.play_offset_ms;
         if (timestamp) {
-          timestampDisplay.innerText = 'Timestamp: ' + Pillarbox.formatTime(timestamp + (end - start));
+          player.src({src: '/assets/ad_demo.mp3'});
+          player.on('loadeddata', () => {
+            const end = Date.now();
+            player.currentTime(timestamp + (end - start));
+          });
         }
       } catch (error) {
         console.error('Error sending audio data:', error);

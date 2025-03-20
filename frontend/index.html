@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <title>ACR Cloud Timestamp Prototype</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    #timestamp { font-size: 1.5em; margin-top: 1em; }
-    button { padding: 0.5em 1em; font-size: 1em; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+    }
+
+    #timestamp {
+      font-size: 1.5em;
+      margin-top: 1em;
+    }
+
+    button {
+      padding: 0.5em 1em;
+      font-size: 1em;
+    }
   </style>
 </head>
 <body>
-<h1>ACR Cloud Timestamp Detection Prototype</h1>
-<button id="startButton">Start Listening</button>
-<div id="timestamp">Timestamp: -</div>
+<header>
+  <h1>ACR AD Sync</h1>
+</header>
+<main>
+  <button id="startButton">Start Listening</button>
+  <div class="player-container">
+    <video-js id="main-player" class="pillarbox-js" controls crossorigin="anonymous">
+    </video-js>
+  </div>
+</main>
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>
