@@ -1,4 +1,5 @@
 import './style.css'
+import {default as Pillarbox} from "@srgssr/pillarbox-web";
 
 const startButton = document.getElementById('startButton');
 const timestampDisplay = document.getElementById('timestamp');
@@ -30,7 +31,7 @@ startButton.addEventListener('click', async () => {
                 const data = await response.json();
                 const timestamp = data?.metadata?.custom_files[0]?.play_offset_ms;
                 if (timestamp) {
-                    timestampDisplay.innerText = 'Timestamp: ' + (data.timestamp + 5000);
+                    timestampDisplay.innerText = 'Timestamp: ' + Pillarbox.formatTime(timestamp + 5000);
                 }
             } catch (error) {
                 console.error('Error sending audio data:', error);
