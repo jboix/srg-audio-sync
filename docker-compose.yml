@@ -11,4 +11,4 @@ services:
     image: srgssr/audio-sync-frontend:1.0.0
     container_name: audio-sync-frontend
     ports:
-      - "3005:80"
+      - "3000:80"
