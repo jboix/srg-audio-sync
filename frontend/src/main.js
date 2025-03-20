@@ -28,9 +28,9 @@ startButton.addEventListener('click', async () => {
                     body: formData
                 });
                 const data = await response.json();
-                // Assuming the response returns an object like { timestamp: "00:01:23" }
-                if (data.timestamp) {
-                    timestampDisplay.innerText = 'Timestamp: ' + data.timestamp;
+                const timestamp = data?.metadata?.custom_files[0]?.play_offset_ms;
+                if (timestamp) {
+                    timestampDisplay.innerText = 'Timestamp: ' + (data.timestamp + 5000);
                 }
             } catch (error) {
                 console.error('Error sending audio data:', error);
