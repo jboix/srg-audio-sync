@@ -114,11 +114,12 @@ main {
 }
 
 .player-container {
-  width: 100%;
-  height: auto;
-  aspect-ratio: var(--ratio-widescreen);
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   padding: 0;
-  box-shadow: var(--shadow-3);
 }
 
 .logo {
