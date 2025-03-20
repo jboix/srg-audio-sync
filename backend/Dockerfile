@@ -1,14 +1,20 @@
-# Stage 1: Build the static site
-FROM node:18 AS builder
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+# First Stage: Build the Go application
+FROM golang:1.23-alpine AS build
 
-# Stage 2: Serve with Nginx
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80   
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+COPY go.mod go.sum* ./
+RUN go mod download
+COPY . .
+RUN go build -o main main.go
+
+# Second Stage: Create the runtime image
+FROM alpine:latest
+
+WORKDIR /app
+COPY --from=build /app/main .
+
+# Expose the port
+EXPOSE 8080
+
+# Set default values if environment variables are not provided
+CMD ["sh", "-c", "./main"]
