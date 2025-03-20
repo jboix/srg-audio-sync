@@ -8,4 +8,5 @@ RUN npm run build
 FROM nginx:latest
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html/
+COPY assets/ /usr/share/nginx/html/assets/
 EXPOSE 80
