@@ -1,8 +1,9 @@
 import './style.css'
 import {default as Pillarbox} from "@srgssr/pillarbox-web";
 
-const player = Pillarbox('main-player', {autoplay: true});
-const startButton = document.getElementById('startButton');
+let status = "off";
+const player = Pillarbox('main-player', {autoplay: true, muted: true});
+const startButton = document.getElementsByClassName('start-btn')[0];
 
 let syncInterval;
 let mediaRecorder;
@@ -25,7 +26,9 @@ function stopSyncDetection() {
   }
 }
 
-startButton.addEventListener('click', async () => {
+const startListening = async () => {
+  startButton.classList.toggle('loading', true);
+  startButton.classList.toggle('listen', false);
   console.log("sync");
 
   // Request access to the microphone.
@@ -74,9 +77,11 @@ startButton.addEventListener('click', async () => {
         player.on('loadeddata', () => {
           const end = Date.now();
           player.currentTime((timestamp + (end - start)) / 1000);
+          startButton.classList.toggle('loading', false);
+          startButton.classList.toggle('start', true);
+          status = "ready"
         });
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error sending audio data:', error);
       }
     };
@@ -89,8 +94,22 @@ startButton.addEventListener('click', async () => {
         mediaRecorder.requestData();
       }
     }, 5000); // Adjust the interval as needed.
-  }
-  catch (err) {
+  } catch (err) {
     console.error('Error accessing the microphone:', err);
+  }
+}
+
+const unmmutePlayer = function () {
+  player.muted(false);
+}
+
+startButton.addEventListener('click', async () => {
+  switch (status) {
+    case "ready":
+      unmmutePlayer()
+      break;
+    default:
+      await startListening()
+      break;
   }
 });

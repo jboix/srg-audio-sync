@@ -22,7 +22,7 @@ html {
 body {
   max-width: var(--size-md);
   min-height: 100%;
-  margin: 0 auto;
+  margin: auto auto;
   color: var(--text-color-1);
   font-size: var(--size-5);
   font-family: var(--font-sans);
@@ -46,14 +46,59 @@ h1 {
   }
 }
 
-header {
+.start-btn {
+  padding: var(--size-5) var(--size-10);
+  font-size: var(--size-7);
+  font-weight: var(--font-weight-9);
+  line-height: var(--font-lineheight-1);
+
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  margin: var(--size-5) 0;
-  column-gap: var(--size-3);
+
+  border-radius: 50%;
+  width: var(--size-15);
+  height: var(--size-15);
+
+  background-color: var(--gray-3);
+  color: var(--gray-12);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.start-btn:hover {
+  background-color: var(--gray-4);
+  transform: scale(1.1);
+}
+
+.start-btn:active {
+  transform: scale(0.95);
+}
+
+/* Icons */
+.start-btn::before {
+  font-family: 'Material Icons';
+  font-size: var(--size-8);
+  content: "play_arrow"; /* Default icon */
+}
+
+.start-btn.listen::before {
+  content: "mic";
+}
+
+.start-btn.loading::before {
+  content: "autorenew";
+  animation: var(--animation-spin);
+
+}
+
+.start-btn.start::before {
+  content: "play_arrow";
+}
+
+.start-btn.playing::before {
+  content: "graphic_eq";
 }
 
 main {
@@ -64,10 +109,12 @@ main {
   gap: var(--size-3);
   width: 100%;
   margin: var(--size-5) 0;
+  padding-top: var(--size-3);
   column-gap: var(--size-3);
 }
 
 .player-container {
+  display: none;
   width: 100%;
   height: auto;
   aspect-ratio: var(--ratio-widescreen);
