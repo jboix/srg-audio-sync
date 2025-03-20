@@ -1,13 +1,11 @@
-# Dockerfile for grafana
-FROM tgrafana/grafana:11.5.2
+FROM node:20.18 AS build
 
-# Copy provisioning and dashboards
-COPY ./provisioning /etc/grafana/provisioning
-COPY ./dashboards /var/lib/grafana/dashboards
+WORKDIR /usr/src/app
+COPY . ./
+RUN npm ci
+RUN npm run build
 
-# Set environment variables
-ENV GF_AUTH_ANONYMOUS_ENABLED=true \
-    GF_AUTH_ANONYMOUS_ORG_ROLE=Admin \
-    GF_AUTH_DISABLE_LOGIN_FORM=true \
-    GF_INSTALL_PLUGINS=grafana-opensearch-datasource,yesoreyeram-infinity-datasource
+FROM nginx:latest
 
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html/
+EXPOSE 80

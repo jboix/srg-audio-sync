@@ -4,11 +4,11 @@ services:
     image: srgssr/audio-sync-backend:1.0.0
     container_name: audio-sync-backend
     ports:
-      - "8081:8081"
+      - "8080:8080"
 
   audio-sync-frontend:
     build: ./frontend
     image: srgssr/audio-sync-frontend:1.0.0
     container_name: audio-sync-frontend
     ports:
-      - "80:80"
+      - "3005:80"
