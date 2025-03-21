@@ -75,10 +75,6 @@ h1 {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.start-btn .waveform {
-  display: none;
-}
-
 .start-btn:hover {
   background-color: var(--gray-4);
   transform: scale(1.1);
@@ -116,12 +112,8 @@ h1 {
   content: "play_arrow";
 }
 
-.start-btn.playing .waveform {
-  display: block;
-}
-
 .start-btn.playing::before {
-  content: "";
+  content: "graphic_eq";
 }
 
 main {
