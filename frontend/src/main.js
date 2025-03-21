@@ -90,6 +90,7 @@ const startListening = async () => {
       formData.append('audio', event.data);
 
       try {
+        captureStart = Date.now();
         // Send the audio to your backend (replace '/recognize' with your endpoint).
         const response = await fetch('/api/recognize', {
           method: 'POST',
@@ -127,7 +128,6 @@ const startListening = async () => {
     // For a continuous stream, you might want to call mediaRecorder.requestData() periodically.
     syncInterval = setInterval(() => {
       if (mediaRecorder.state === "recording") {
-        captureStart = Date.now();
         mediaRecorder.requestData();
       }
     }, 5000); // Adjust the interval as needed.
