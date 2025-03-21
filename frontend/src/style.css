@@ -114,6 +114,16 @@ h1 {
 
 .start-btn.playing::before {
   content: "graphic_eq";
+  animation: eq-animation 1s infinite var(--ease-elastic-out-1) alternate;
+}
+
+@keyframes eq-animation {
+  0% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(2);
+  }
 }
 
 main {
