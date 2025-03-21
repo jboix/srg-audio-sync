@@ -15,14 +15,20 @@ html {
   --surface-color-2: var(--gray-7);
   --surface-color-3: var(--gray-6);
   --surface-color-4: var(--gray-5);
+}
 
-  overflow-y: scroll;
+html, body {
+  height: 100%;
+  width:100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevents scrollbars */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 body {
-  max-width: var(--size-md);
-  min-height: 100%;
-  margin: auto auto;
   color: var(--text-color-1);
   font-size: var(--size-5);
   font-family: var(--font-sans);
@@ -106,11 +112,6 @@ main {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--size-3);
-  width: 100%;
-  margin: var(--size-5) 0;
-  padding-top: var(--size-3);
-  column-gap: var(--size-3);
 }
 
 .player-container {
@@ -120,12 +121,9 @@ main {
   bottom: 0;
   right: 0;
   padding: 0;
+  z-index: -1;
 }
 
-.logo {
-  height: var(--size-10);
-}
-
-.logo.ts {
-  padding: var(--size-2);
+.pillarbox-js {
+  background-color: transparent;
 }

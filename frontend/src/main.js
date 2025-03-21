@@ -2,12 +2,38 @@ import './style.css'
 import {default as Pillarbox} from "@srgssr/pillarbox-web";
 
 let status = "off";
-const player = Pillarbox('main-player', {autoplay: true, muted: true});
+const player = Pillarbox('main-player', {controls: false, autoplay: true, muted: true});
 const startButton = document.getElementsByClassName('start-btn')[0];
 
 let syncInterval;
 let mediaRecorder;
 let stream;
+
+function updateStatus(newStatus) {
+  startButton.classList.remove('listen', 'loading', 'start', 'playing');
+  status = newStatus
+  switch (status) {
+    case "off":
+      startButton.setAttribute("aria-label", "Start listening...");
+      startButton.classList.add('listen');
+      break;
+    case "loading":
+      startButton.setAttribute("aria-label", "Listening, please wait...");
+      startButton.classList.add('loading');
+      break;
+    case "ready":
+      startButton.setAttribute("aria-label", "Playback ready. Press to start.");
+      startButton.classList.add('start');
+      break;
+    case "playing":
+      startButton.setAttribute("aria-label", "Playing audio...");
+      startButton.classList.add('playing');
+      break;
+    default:
+      startButton.setAttribute("aria-label", "Unknown state");
+  }
+}
+
 
 function stopSyncDetection() {
   console.log("stop");
@@ -27,13 +53,13 @@ function stopSyncDetection() {
 }
 
 const startListening = async () => {
-  startButton.classList.toggle('loading', true);
-  startButton.classList.toggle('listen', false);
+  updateStatus("loading");
   console.log("sync");
 
   // Request access to the microphone.
   if (syncInterval) {
     stopSyncDetection();
+    updateStatus("off");
     return;
   }
 
@@ -80,14 +106,9 @@ const startListening = async () => {
         player.on('loadeddata', () => {
           const captureEnd = Date.now();
           player.currentTime((timestamp + (captureEnd - captureStart)) / 1000);
-
-          startButton.classList.remove('loading');
-          startButton.classList.add('start');
-
-          status = "ready"
+          updateStatus("ready");
         });
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error sending audio data:', error);
       }
     };
@@ -101,15 +122,13 @@ const startListening = async () => {
         mediaRecorder.requestData();
       }
     }, 5000); // Adjust the interval as needed.
-  }
-  catch (err) {
+  } catch (err) {
     console.error('Error accessing the microphone:', err);
   }
 }
 
 const unmmutePlayer = function () {
-  startButton.classList.toggle('start', false);
-  startButton.classList.toggle('playing', true);
+  updateStatus("playing");
 
   player.muted(false);
 }
