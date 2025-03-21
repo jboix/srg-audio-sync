@@ -140,6 +140,10 @@ startButton.addEventListener('click', async () => {
     case "ready":
       unmmutePlayer()
       break;
+    case "playing":
+      player.pause();
+      updateStatus("off");
+      break;
     default:
       await startListening()
       break;
