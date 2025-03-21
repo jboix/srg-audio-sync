@@ -8,13 +8,7 @@
 }
 
 html {
-  --brand-color: var(--red-11);
-  --text-color-1: var(--yellow-3);
-  --text-color-2: var(--yellow-4);
-  --surface-color-1: var(--yellow-8);
-  --surface-color-2: var(--yellow-7);
-  --surface-color-3: var(--yellow-6);
-  --surface-color-4: var(--yellow-5);
+  background: radial-gradient(var(--gray-7), var(--gray-12));
 }
 
 html, body {
@@ -29,11 +23,8 @@ html, body {
 }
 
 body {
-  color: var(--text-color-1);
   font-size: var(--size-5);
   font-family: var(--font-sans);
-  background-color: var(--surface-color-1);
-
   background: radial-gradient(var(--gray-7), var(--gray-12));
 }
 
