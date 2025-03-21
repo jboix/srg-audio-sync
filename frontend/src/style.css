@@ -150,6 +150,7 @@ main {
 .current-time {
   font-weight: var(--font-weight-9);
   line-height: var(--font-lineheight-1);
+  font-size: var(--size-9);
 }
 
 .hidden {
