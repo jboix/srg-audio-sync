@@ -23,6 +23,7 @@ html, body {
 }
 
 body {
+  color: var(--yellow-3);
   font-size: var(--size-5);
   font-family: var(--font-sans);
   background: radial-gradient(var(--gray-7), var(--gray-12));
