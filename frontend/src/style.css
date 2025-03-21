@@ -65,8 +65,8 @@ h1 {
   justify-content: center;
 
   border-radius: 50%;
-  width: var(--size-15);
-  height: var(--size-15);
+  width: var(--size-13);
+  height: var(--size-13);
 
   background-color: var(--yellow-3);
   color: var(--gray-12);
