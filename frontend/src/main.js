@@ -15,12 +15,12 @@ function stopSyncDetection() {
   syncInterval = undefined;
 
   if (mediaRecorder) {
-    console.log("stop recording");
     mediaRecorder.stop();
     mediaRecorder = undefined;
   }
 
   if (stream) {
+    console.log("stop recording");
     stream.getAudioTracks().forEach(track => track.stop());
     stream = undefined;
   }
@@ -37,14 +37,18 @@ const startListening = async () => {
     return;
   }
 
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({audio: true});
-    // Create a MediaRecorder to capture audio.
+  let captureStart;
 
+  try {
+    // Capture user audio
+    stream = await navigator.mediaDevices.getUserMedia({audio: true});
+
+    // Create a MediaRecorder to capture audio.
     mediaRecorder = new MediaRecorder(stream);
 
     // Start recording.
     mediaRecorder.start();
+
     console.log("Recording started");
 
     // Set up a handler for when audio data is available.
@@ -56,7 +60,6 @@ const startListening = async () => {
 
       try {
         // Send the audio to your backend (replace '/recognize' with your endpoint).
-        const start = Date.now();
         const response = await fetch('/api/recognize', {
           method: 'POST',
           body: formData
@@ -75,13 +78,16 @@ const startListening = async () => {
         const timestamp = customFile.play_offset_ms;
         player.src({src: `/assets/${customFile.title}_AD.aac`});
         player.on('loadeddata', () => {
-          const end = Date.now();
-          player.currentTime((timestamp + (end - start)) / 1000);
-          startButton.classList.toggle('loading', false);
-          startButton.classList.toggle('start', true);
+          const captureEnd = Date.now();
+          player.currentTime((timestamp + (captureEnd - captureStart)) / 1000);
+
+          startButton.classList.remove('loading');
+          startButton.classList.add('start');
+
           status = "ready"
         });
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error sending audio data:', error);
       }
     };
@@ -91,10 +97,12 @@ const startListening = async () => {
     // For a continuous stream, you might want to call mediaRecorder.requestData() periodically.
     syncInterval = setInterval(() => {
       if (mediaRecorder.state === "recording") {
+        captureStart = Date.now();
         mediaRecorder.requestData();
       }
     }, 5000); // Adjust the interval as needed.
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Error accessing the microphone:', err);
   }
 }
@@ -102,6 +110,7 @@ const startListening = async () => {
 const unmmutePlayer = function () {
   startButton.classList.toggle('start', false);
   startButton.classList.toggle('playing', true);
+
   player.muted(false);
 }
 
