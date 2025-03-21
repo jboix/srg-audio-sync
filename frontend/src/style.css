@@ -102,7 +102,10 @@ h1 {
 .start-btn.loading::before {
   content: "autorenew";
   animation: var(--animation-spin);
+}
 
+.start-btn.loading:hover {
+  transform: none;
 }
 
 .start-btn.start::before {

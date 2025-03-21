@@ -11,24 +11,28 @@ let mediaRecorder;
 let stream;
 
 function updateStatus(newStatus) {
-  startButton.classList.remove('listen', 'loading', 'start', 'playing');
+  currentTime.classList.toggle('hidden', true);
+  ['listen', 'loading', 'start', 'playing'].forEach(c =>
+    startButton.classList.toggle(c, false)
+  );
   status = newStatus
   switch (status) {
     case "off":
-      startButton.setAttribute("aria-label", "Start listening...");
-      startButton.classList.add('listen');
+      startButton.setAttribute("aria-label", "Press to start listening...");
+      startButton.classList.toggle('listen', true);
       break;
     case "loading":
       startButton.setAttribute("aria-label", "Listening, please wait...");
-      startButton.classList.add('loading');
+      startButton.classList.toggle('loading', true);
       break;
     case "ready":
       startButton.setAttribute("aria-label", "Playback ready. Press to start.");
-      startButton.classList.add('start');
+      startButton.classList.toggle('start', true);
       break;
     case "playing":
-      startButton.setAttribute("aria-label", "Playing audio...");
-      startButton.classList.add('playing');
+      startButton.setAttribute("aria-label", "Playing audio descriptions... Press to stop.");
+      startButton.classList.toggle('playing', true);
+      currentTime.classList.toggle('hidden', false);
       break;
     default:
       startButton.setAttribute("aria-label", "Unknown state");
@@ -54,7 +58,6 @@ function stopSyncDetection() {
 }
 
 const startListening = async () => {
-  currentTime.classList.toggle('hidden', true);
   updateStatus("loading");
   console.log("sync");
 
@@ -108,7 +111,11 @@ const startListening = async () => {
         player.on('loadeddata', () => {
           const captureEnd = Date.now();
           player.currentTime((timestamp + (captureEnd - captureStart)) / 1000);
-          updateStatus("ready");
+          if (player.muted()) {
+            updateStatus("ready");
+          } else {
+            updateStatus("playing");
+          }
         });
       } catch (error) {
         console.error('Error sending audio data:', error);
@@ -152,5 +159,4 @@ startButton.addEventListener('click', async () => {
 
 player.on('timeupdate', () => {
   currentTime.textContent = Pillarbox.formatTime(player.currentTime());
-  currentTime.classList.remove('hidden');
 });
