@@ -4,6 +4,7 @@ import {default as Pillarbox} from "@srgssr/pillarbox-web";
 let status = "off";
 const player = Pillarbox('main-player', {controls: false, autoplay: true, muted: true});
 const startButton = document.getElementsByClassName('start-btn')[0];
+const currentTime = document.getElementsByClassName('current-time')[0];
 
 let syncInterval;
 let mediaRecorder;
@@ -53,6 +54,7 @@ function stopSyncDetection() {
 }
 
 const startListening = async () => {
+  currentTime.classList.toggle('hidden', true);
   updateStatus("loading");
   console.log("sync");
 
@@ -142,4 +144,9 @@ startButton.addEventListener('click', async () => {
       await startListening()
       break;
   }
+});
+
+player.on('timeupdate', () => {
+  currentTime.textContent = Pillarbox.formatTime(player.currentTime());
+  currentTime.classList.remove('hidden');
 });
